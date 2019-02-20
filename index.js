@@ -9,6 +9,7 @@ let app = express();
 var port = process.env.PORT || 8080;
 // Send message for default URL
 app.get('/', (req, res) => res.send('Hello World with Express'));
+
 app.get('/values', (req, res)=>{
   console.log(req.query.id);
   if (req.query.id === undefined){
@@ -17,11 +18,6 @@ app.get('/values', (req, res)=>{
       var dbo = db.db("mydb");
       dbo.collection("realtimeValue").find({}).toArray(function(err, result) {
         if (err) throw err;
-        //console.log(result);
-        // res.json({
-        //   message: 'Contact Info updated',
-        //   data: contact
-        // });
         res.json(result);
         db.close();
       });
@@ -33,11 +29,6 @@ app.get('/values', (req, res)=>{
       var query = {id:req.query.id}
       dbo.collection("realtimeValue").find(query).toArray(function(err, result) {
         if (err) throw err;
-        //console.log(result);
-        // res.json({
-        //   message: 'Contact Info updated',
-        //   data: contact
-        // });
         res.json(result);
         db.close();
       });
@@ -61,6 +52,7 @@ server.on('message', (msg, rinfo) => {
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("mydb");
+
     var thTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
     //thTime = new Date(thTime);
     try {
@@ -70,6 +62,7 @@ server.on('message', (msg, rinfo) => {
         return false;
     }
     var obj = JSON.parse(msg);
+    
     obj.dt = thTime
     //var jsonDat = {id:"1234",airTemp:"25",airHumid:"70",pm1:"50",pm25:"100",pm10:"10",rain:"1",uv:"0.04",soilHumid:"20",wind:"10",dt:thTime};
     dbo.collection("realtimeValue").insertOne(obj, function(err, res) {
