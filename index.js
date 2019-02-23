@@ -30,7 +30,7 @@ app.get('/values', (req, res)=>{
           db.close();
         });
       }else{
-        dbo.collection("realtimeValue").find(query).sort({dt:-1}).limit(req.query.limit).toArray(function(err, result) {
+        dbo.collection("realtimeValue").find(query).sort({dt:-1}).limit(parseInt(req.query.limit)).toArray(function(err, result) {
           if (err) throw err;
           res.json(result);
           db.close();
