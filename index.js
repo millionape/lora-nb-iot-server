@@ -12,11 +12,18 @@ app.get('/', (req, res) => res.send('Hello World with Express'));
 
 app.get('/values', (req, res)=>{
   console.log(req.query.id);
-  if (req.query.id === undefined){
+  if ((req.query.id === undefined)|(req.query.gid === undefined)){
     MongoClient.connect(url, function(err, db) {
       if (err) throw err;
       var dbo = db.db("mydb");
-      dbo.collection("realtimeValue").find({}).toArray(function(err, result) {
+      var query = {}
+      if(req.query.id !== undefined){
+        query.id = req.query.id
+      }
+      if(req.query.gid !== undefined){
+        query.gid = req.query.gid
+      }
+      dbo.collection("realtimeValue").find(query).toArray(function(err, result) {
         if (err) throw err;
         res.json(result);
         db.close();
@@ -26,7 +33,7 @@ app.get('/values', (req, res)=>{
     MongoClient.connect(url, function(err, db) {
       if (err) throw err;
       var dbo = db.db("mydb");
-      var query = {id:req.query.id}
+      var query = {id:req.query.id,gid:req.query.gid}
       dbo.collection("realtimeValue").find(query).toArray(function(err, result) {
         if (err) throw err;
         res.json(result);
