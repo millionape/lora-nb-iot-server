@@ -23,7 +23,7 @@ app.get('/values', (req, res)=>{
       if(req.query.gid !== undefined){
         query.gid = req.query.gid
       }
-      dbo.collection("realtimeValue").sort({dt: -1}).find(query).toArray(function(err, result) {
+      dbo.collection("realtimeValue").find(query).sort({dt:-1}).limit(-1).toArray(function(err, result) {
         if (err) throw err;
         res.json(result);
         db.close();
