@@ -42,11 +42,19 @@ app.get('/values', (req, res)=>{
       if (err) throw err;
       var dbo = db.db("mydb");
       var query = {id:req.query.id,gid:req.query.gid}
-      dbo.collection("realtimeValue").find(query).toArray(function(err, result) {
-        if (err) throw err;
-        res.json(result);
-        db.close();
-      });
+      if(req.query.limit === undefined){
+        dbo.collection("realtimeValue").find(query).sort({dt:-1}).toArray(function(err, result) {
+          if (err) throw err;
+          res.json(result);
+          db.close();
+        });
+      }else{
+        dbo.collection("realtimeValue").find(query).sort({dt:-1}).limit(parseInt(req.query.limit)).toArray(function(err, result) {
+          if (err) throw err;
+          res.json(result);
+          db.close();
+        });
+      }
     });
   }
 
