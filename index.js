@@ -75,32 +75,45 @@ server.on('message', (msg, rinfo) => {
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("mydb");
-
-    var thTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
-    //thTime = new Date(thTime);
-    try {
-      JSON.parse(msg);
-    } catch (e) {
-        console.log("this is not a json format");
-        return false;
-    }
-    var obj = JSON.parse(msg);
-    
-    obj.dt = thTime
-    //var jsonDat = {id:"1234",airTemp:"25",airHumid:"70",pm1:"50",pm25:"100",pm10:"10",rain:"1",uv:"0.04",soilHumid:"20",wind:"10",dt:thTime};
-    dbo.collection("realtimeValue").insertOne(obj, function(err, res) {
-      if (err) throw err;
-      console.log("1 document inserted");
-      var res = "OK"
-      server.send(res,rinfo.port,rinfo.address,function(error){
+    console.log(msg);
+    var arr = msg.toString().split("/").map(function (val) {
+      return Number(val);
+    });
+    console.log(arr.length);
+    if(arr.length >= 10){
+      var thTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
+      var jsonDat = {id:arr[0].toString(),airTemp:arr[1].toString(),airHumid:arr[2].toString(),pm1:arr[3].toString(),pm25:arr[4].toString(),pm10:arr[5].toString(),rain:arr[6].toString(),uv:arr[7].toString(),soilHumid:arr[8].toString(),wind:arr[9].toString(),dt:thTime};
+      console.log(jsonDat);
+      // try {
+      //   JSON.parse(jsonDat);
+      // } catch (e) {
+      //     console.log("this is not a json format");
+      //     return false;
+      // }
+      var obj = (jsonDat);
+      dbo.collection("realtimeValue").insertOne(obj, function(err, res) {
+        if (err) throw err;
+        console.log("1 document inserted");
+        var res = "OK"
+        server.send(res,rinfo.port,rinfo.address,function(error){
+          if(error){
+            client.close();
+          }else{
+            console.log('Data sent !!!');
+          }
+        });
+        db.close();
+      });
+    }else{
+      server.send("ERROR",rinfo.port,rinfo.address,function(error){
         if(error){
           client.close();
         }else{
-          console.log('Data sent !!!');
+          console.log('ERROR sent !!!');
+          db.close();
         }
       });
-      db.close();
-    });
+    }
   });
 });
 server.on('listening', () => {
