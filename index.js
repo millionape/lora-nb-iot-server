@@ -82,7 +82,7 @@ server.on('message', (msg, rinfo) => {
     console.log(arr.length);
     if(arr.length >= 11){
       var thTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
-      var jsonDat = {gid:arr[10].toString(),id:arr[0].toString(),airTemp:arr[1].toString(),airHumid:arr[2].toString(),pm1:arr[3].toString(),pm25:arr[4].toString(),pm10:arr[5].toString(),rain:arr[6].toString(),uv:arr[7].toString(),soilHumid:arr[8].toString(),wind:arr[9].toString(),dt:thTime};
+      var jsonDat = {gid:arr[10].toString(),id:arr[0].toString(),airTemp:arr[4].toString(),airHumid:arr[5].toString(),pm1:arr[1].toString(),pm25:arr[2].toString(),pm10:arr[3].toString(),rain:arr[7].toString(),uv:arr[6].toString(),soilHumid:arr[8].toString(),wind:arr[9].toString(),dt:thTime};
       console.log(jsonDat);
       // try {
       //   JSON.parse(jsonDat);
