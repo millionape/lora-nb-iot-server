@@ -84,11 +84,11 @@ server.on('message', (msg, rinfo) => {
     if(arr.length >= 11){
       //var moment = require('moment-timezone');
       //var time = moment.tz('Asia/Bangkok').format("YYYY-MM-DDTHH:MM:ss");
-      var now = moment(new Date());
-      var th = now.tz('Asia/Bangkok').format();
-      //var thTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
-      //var now = new Date(thTime);
-      var jsonDat = {gid:arr[10].toString(),id:arr[0].toString(),airTemp:arr[4].toString(),airHumid:arr[5].toString(),pm1:arr[1].toString(),pm25:arr[2].toString(),pm10:arr[3].toString(),rain:arr[7].toString(),uv:arr[6].toString(),soilHumid:arr[8].toString(),wind:arr[9].toString(),dt:th};
+      //var now = moment(new Date());
+      //var th = now.tz('Asia/Bangkok').format();
+      var thTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
+      var now = new Date(thTime);
+      var jsonDat = {gid:arr[10].toString(),id:arr[0].toString(),airTemp:arr[4].toString(),airHumid:arr[5].toString(),pm1:arr[1].toString(),pm25:arr[2].toString(),pm10:arr[3].toString(),rain:arr[7].toString(),uv:arr[6].toString(),soilHumid:arr[8].toString(),wind:arr[9].toString(),dt:now};
       console.log(jsonDat);
       // try {
       //   JSON.parse(jsonDat);
