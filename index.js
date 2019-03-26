@@ -1,4 +1,4 @@
-const moment = require('moment')
+var moment = require('moment')
 const dgram = require('dgram'); 
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
@@ -88,7 +88,7 @@ server.on('message', (msg, rinfo) => {
       var th = now.tz('Asia/Bangkok').format();
       //var thTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
       //var now = new Date(thTime);
-      var jsonDat = {gid:arr[10].toString(),id:arr[0].toString(),airTemp:arr[4].toString(),airHumid:arr[5].toString(),pm1:arr[1].toString(),pm25:arr[2].toString(),pm10:arr[3].toString(),rain:arr[7].toString(),uv:arr[6].toString(),soilHumid:arr[8].toString(),wind:arr[9].toString(),dt:th.format()};
+      var jsonDat = {gid:arr[10].toString(),id:arr[0].toString(),airTemp:arr[4].toString(),airHumid:arr[5].toString(),pm1:arr[1].toString(),pm25:arr[2].toString(),pm10:arr[3].toString(),rain:arr[7].toString(),uv:arr[6].toString(),soilHumid:arr[8].toString(),wind:arr[9].toString(),dt:th};
       console.log(jsonDat);
       // try {
       //   JSON.parse(jsonDat);
