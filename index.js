@@ -14,12 +14,11 @@ app.get('/dateFind', (req, res) => {
   var from = req.query.fdate;
   var to = req.query.tdate
   console.log("from :");
-  console.log(from);
-  console.log(to);
-  MongoClient.connect(url, function(err, db) {MongoClient.connect(url, function(err, db) {
+  console.log("from :");
+  MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("mydb");
-    var query = {id:req.query.id,gid:req.query.gid,date_created:{"$gte":new Date(from),"$lt":new Date(to)}}
+    var query = {id:req.query.id,gid:req.query.gid,dt:{$gt:new Date(from),$lt:new Date(to)}}
     if(req.query.limit === undefined){
       dbo.collection("realtimeValue").find(query).sort({dt:-1}).toArray(function(err, result) {
         if (err) throw err;
