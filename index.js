@@ -10,7 +10,31 @@ let app = express();
 var port = process.env.PORT || 8080;
 // Send message for default URL
 app.get('/', (req, res) => res.send('Hello World with Express'));
-
+app.get('/dateFind', (req, res) => {
+  var from = req.query.fdate;
+  var to = req.query.tdate
+  console.log("from :");
+  console.log(from);
+  console.log(to);
+  MongoClient.connect(url, function(err, db) {MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("mydb");
+    var query = {id:req.query.id,gid:req.query.gid,date_created:{"$gte":new Date(from),"$lt":new Date(to)}}
+    if(req.query.limit === undefined){
+      dbo.collection("realtimeValue").find(query).sort({dt:-1}).toArray(function(err, result) {
+        if (err) throw err;
+        res.json(result);
+        db.close();
+      });
+    }else{
+      dbo.collection("realtimeValue").find(query).sort({dt:-1}).limit(parseInt(req.query.limit)).toArray(function(err, result) {
+        if (err) throw err;
+        res.json(result);
+        db.close();
+      });
+    }
+  });
+});
 app.get('/values', (req, res)=>{
   console.log(req.query.id);
   if ((req.query.id === undefined)|(req.query.gid === undefined)){
