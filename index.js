@@ -1,4 +1,5 @@
 var moment = require('moment')
+var net = require('net');
 const dgram = require('dgram'); 
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
@@ -151,3 +152,32 @@ server.on('listening', () => {
   });
   
 server.bind(2888);
+
+/////////////////////////////// TCP SERVER PART ////////////////////////////////////
+
+var HOST = '127.0.0.1';
+var PORT = 1234;
+ 
+// Create Server instance 
+var tserver = net.createServer(onClientConnected);  
+ 
+tserver.listen(PORT, HOST, function() {  
+  console.log('server listening on %j', tserver.address());
+});
+ 
+function onClientConnected(sock) {  
+  var remoteAddress = sock.remoteAddress + ':' + sock.remotePort;
+  console.log('new client connected: %s', remoteAddress);
+ 
+  sock.on('data', function(data) {
+    console.log('%s Says: %s', remoteAddress, data);
+    // sock.write(data);
+    // sock.write(' exit');
+  });
+  sock.on('close',  function () {
+    console.log('connection from %s closed', remoteAddress);
+  });
+  sock.on('error', function (err) {
+    console.log('Connection %s error: %s', remoteAddress, err.message);
+  });
+};
