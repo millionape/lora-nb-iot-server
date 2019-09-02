@@ -155,7 +155,7 @@ server.bind(2888);
 
 /////////////////////////////// TCP SERVER PART ////////////////////////////////////
 
-var HOST = '127.0.0.1';
+var HOST = '0.0.0.0';
 var PORT = 1234;
  
 // Create Server instance 
