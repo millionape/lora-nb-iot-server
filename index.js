@@ -170,8 +170,49 @@ function onClientConnected(sock) {
   console.log('new client connected: %s', remoteAddress);
  
   sock.on('data', function(data) {
-    console.log('%s Says: %s', remoteAddress, data);
-    sock.write('received!');
+    console.log('%s node Says: %s', remoteAddress, data);
+    ///////// DB store ////////////
+    MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("mydb");
+      console.log(data);
+      var arr = data.toString().split("/").map(function (val) {
+        return Number(val);
+      });
+      console.log(arr.length);
+      if(arr.length >= 11){
+        var jsonDat = {gid:arr[10].toString(),id:arr[0].toString(),airTemp:arr[4].toString(),airHumid:arr[5].toString(),pm1:arr[1].toString(),pm25:arr[2].toString(),pm10:arr[3].toString(),rain:arr[7].toString(),uv:arr[6].toString(),soilHumid:arr[8].toString(),wind:arr[9].toString(),dt:new Date()};
+        console.log(jsonDat);
+        var obj = (jsonDat);
+        dbo.collection("realtimeValue").insertOne(obj, function(err, res) {
+          if (err) throw err;
+          console.log("1 document inserted");
+          var res = "OK"
+          sock.write('received!');
+          // server.send(res,rinfo.port,rinfo.address,function(error){
+          //   if(error){
+          //     client.close();
+          //   }else{
+          //     console.log('Data sent !!!');
+          //   }
+          // });
+          db.close();
+        });
+      }else{
+        sock.write('receive length error!');
+        db.close();
+        // server.send("ERROR",rinfo.port,rinfo.address,function(error){
+        //   if(error){
+        //     client.close();
+        //   }else{
+        //     console.log('ERROR sent !!!');
+        //     db.close();
+        //   }
+        // });
+      }
+    });
+
+    // sock.write('received!');
     // sock.write(' exit');
   });
   sock.on('close',  function () {
