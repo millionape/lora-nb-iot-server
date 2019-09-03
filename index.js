@@ -171,7 +171,7 @@ function onClientConnected(sock) {
  
   sock.on('data', function(data) {
     console.log('%s Says: %s', remoteAddress, data);
-    // sock.write(data);
+    sock.write('received!');
     // sock.write(' exit');
   });
   sock.on('close',  function () {
