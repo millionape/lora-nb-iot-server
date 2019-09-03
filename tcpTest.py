@@ -16,10 +16,12 @@ client.connect(('119.59.125.170', 1234))
 client.send('99/50/100/150/25/80/0.3/1/70/30/91'.encode())
 
 # receive the response data (4096 is recommended buffer size)
-# while True:
-#     response = client.recv(4096)
-#     if not response: 
-#         break
-#     print ("received data:", response)
-#     # client.send(data)
+while True:
+    response = client.recv(4096)
+    if not response: 
+        break
+    print ("received data:", response)
+    break
+    # client.send(data)
 client.close()
+
