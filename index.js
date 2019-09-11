@@ -189,6 +189,7 @@ function onClientConnected(sock) {
           console.log("1 document inserted");
           var res = "OK"
           sock.write('received!');
+          sock.close();
           // server.send(res,rinfo.port,rinfo.address,function(error){
           //   if(error){
           //     client.close();
@@ -200,6 +201,7 @@ function onClientConnected(sock) {
         });
       }else{
         sock.write('receive length error!');
+        sock.close();
         db.close();
         // server.send("ERROR",rinfo.port,rinfo.address,function(error){
         //   if(error){
