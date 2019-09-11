@@ -188,9 +188,8 @@ function onClientConnected(sock) {
           if (err) throw err;
           console.log("1 document inserted");
           var res = "OK"
-          sock.write('received!');
-          sock.close();
-          // server.send(res,rinfo.port,rinfo.address,function(error){
+          // sock.write('received!');
+                    // server.send(res,rinfo.port,rinfo.address,function(error){
           //   if(error){
           //     client.close();
           //   }else{
@@ -200,8 +199,8 @@ function onClientConnected(sock) {
           db.close();
         });
       }else{
-        sock.write('receive length error!');
-        sock.close();
+        console.log("len ERROR");
+        //sock.write('receive length error!');
         db.close();
         // server.send("ERROR",rinfo.port,rinfo.address,function(error){
         //   if(error){
